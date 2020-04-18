@@ -45,8 +45,9 @@ app.post("/api/workouts", function(req, res) {
     });
 });
 
-app.put("api/workouts", function(req, res) {
-
+app.put("/api/workouts/:id", function(req, res) {
+    console.log(req.body);
+    db.collection.findOneAndUpdate({_id: req.params.id}, {$push: {exercises: req.body}}, (err, result) => res.json(result));
 });
 
 app.listen(PORT, function() {
