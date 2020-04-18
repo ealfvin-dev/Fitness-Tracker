@@ -1,12 +1,17 @@
 const express = require("express");
 var path = require("path");
 
+const mongoose = require("mongoose");
+const db = require("./models/workout");
+
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3003;
 
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/Workout", { useNewUrlParser: true });
 
 app.get("/", function(req, res) {
     res.sendFile(path.join(__dirname + "/public/index.html"));
@@ -20,6 +25,30 @@ app.get("/stats", function(req, res) {
     res.sendFile(path.join(__dirname + "/public/stats.html"));
 });
 
+app.get("/api/workouts", function(req, res) {
+    db.find({}, (err, results) => {
+        //console.log(JSON.stringify(results));
+        res.json(results);
+    });
+});
+
+app.get("/api/workouts/range", function(req, res) {
+
+});
+
+app.post("/api/workouts", function(req, res) {
+    db.collection.insertOne(req.body)
+    .then(data => {res.json(data)})
+    .catch(err => {
+        console.error(err);
+        process.exit(1);
+    });
+});
+
+app.put("api/workouts", function(req, res) {
+
+});
+
 app.listen(PORT, function() {
-    console.log("App running at localhost:3000");
+    console.log("App running at localhost:" + PORT);
 });
