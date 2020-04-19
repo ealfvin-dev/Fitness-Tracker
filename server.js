@@ -34,10 +34,10 @@ app.get("/api/workouts", function(req, res) {
 
 app.get("/api/workouts/range", function(req, res) {
     db.find({}, (err, results) => {res.json(results)});
-})
+});
 
 app.post("/api/workouts", function(req, res) {
-    db.collection.insertOne(req.body)
+    db.collection.insertOne({exercises: []})
     .then(data => {res.json(data)})
     .catch(err => {
         console.error(err);
