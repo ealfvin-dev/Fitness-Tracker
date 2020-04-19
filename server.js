@@ -37,7 +37,7 @@ app.get("/api/workouts/range", function(req, res) {
 });
 
 app.post("/api/workouts", function(req, res) {
-    db.collection.insertOne({exercises: []})
+    db.collection.insertOne({day: Date.now(), exercises: []})
     .then(data => {res.json(data)})
     .catch(err => {
         console.error(err);
